@@ -136,33 +136,88 @@ public class SafeInput
      * @param high the high bound for the inclusive range
      * @return any valid double within the inclusive range
      */
-    public static double getRangedDouble(Scanner pipe, String prompt, double low, double high)
-    {
+    public static double getRangedDouble(Scanner pipe, String prompt, double low, double high) {
         boolean done = false;
         String trash = "";
         double value = 0;
 
-        do
-        {
-            System.out.print(prompt +"[" + low + " - " + high + "]: ");
-            if(pipe.hasNextDouble())
-            {
+        do {
+            System.out.print(prompt + "[" + low + " - " + high + "]: ");
+            if (pipe.hasNextDouble()) {
                 value = pipe.nextDouble();
                 pipe.nextLine();//Clear the buffer
 
-                if(value >= low && value <= high)
+                if (value >= low && value <= high)
                     done = true;
                 else
                     System.out.println("\nYou must enter a value within the range [" + low + " - " + high + "]: " + value);
-            }
-            else
-            {
+            } else {
                 trash = pipe.nextLine();
                 System.out.println("\nYou must enter a number. You entered: " + trash);
             }
 
-        }while(!done);
+        } while (!done);
 
         return value;
     }
-}
+
+        /**
+         * returns a true false value for yes or no [yn]
+         * @param pipe scanner to read the input
+         * @param prompt msg to tell the user what to input
+         * @return a boolean true or false for yes or no
+         */
+        public static boolean getYNConfirm(Scanner pipe, String prompt)
+        {
+            boolean done = false;
+            String response = "";
+            boolean retVal = false;
+
+            do
+            {
+                System.out.print(prompt +"[YyNn]: ");
+                response = pipe.nextLine();
+
+                if(response.toUpperCase().matches("[YN]"))
+                {
+                    done = true;
+                    if (response.equalsIgnoreCase("Y"))
+                        retVal = true;
+                    else //N
+                        retVal = false;
+                }
+                else
+                    System.out.println("\nYou must enter [y/n]!\n");
+            }while(!done);
+
+            return retVal;
+        }
+
+        /**
+         * A regEx String and returns a valid match from the user
+         * @param pipe scanner to use for input
+         * @param prompt msg to user telling them what is needed for input
+         * @param regEx a String that represents a Regular Expression to use for the test
+         * @return a String value that matches the regular expression
+         */
+        public static String getRegExString(Scanner pipe, String prompt, String regEx)
+        {
+            boolean done = false;
+            String response = "";
+
+            do
+            {
+                System.out.print(prompt +" " + regEx + ": ");
+                response = pipe.nextLine();
+
+                if(response.matches(regEx))
+                    done = true;
+                else
+                    System.out.println("\nYou must enter a String that matches the pattern " + regEx + "!\n");
+
+            }while(!done);
+
+            return response;
+        }
+    }
+

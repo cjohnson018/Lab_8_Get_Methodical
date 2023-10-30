@@ -10,6 +10,7 @@ public class DevTest
         int age = 0;
         double salary = 0;
         int favNum = 0;
+        String ssn = "";
     /*
         firstName = SafeInput.getNonZeroLenString(testScan, "Enter your first name");
         System.out.println("First name is " + firstName);
@@ -28,8 +29,16 @@ public class DevTest
         favNum = getRangedInt(testScan, "Enter your favorite number ", 1, 10);
         System.out.println("You said your fav num is: " + favNum);
          */
+        /*
         salary = getRangedDouble(testScan, "Enter your salary", 300, 100000);
         System.out.println("You said your salary is " + salary);
+         */
+
+        //Put the test here for YN
+
+        String ssnRegEx = "\\d{3}-\\d{2}-\\d{4}";
+        ssn = getRegExString(testScan, "Enter your SSN",ssnRegEx);
+        System.out.println("You said ssn is: " + ssn);
     }
     //Methods go here
 
@@ -197,4 +206,64 @@ public class DevTest
 
         return value;
     }
+
+    /**
+     * returns a true false value for yes or no [yn]
+     * @param pipe scanner to read the input
+     * @param prompt msg to tell the user what to input
+     * @return a boolean true or false for yes or no
+     */
+    public static boolean getYNConfirm(Scanner pipe, String prompt)
+    {
+        boolean done = false;
+        String response = "";
+        boolean retVal = false;
+
+        do
+        {
+            System.out.print(prompt +"[YyNn]: ");
+            response = pipe.nextLine();
+
+            if(response.toUpperCase().matches("[YN]"))
+            {
+                done = true;
+                if (response.equalsIgnoreCase("Y"))
+                    retVal = true;
+                else //N
+                    retVal = false;
+            }
+            else
+                System.out.println("\nYou must enter [y/n]!\n");
+        }while(!done);
+
+        return retVal;
+    }
+
+    /**
+     * A regEx String and returns a valid match from the user
+     * @param pipe scanner to use for input
+     * @param prompt msg to user telling them what is needed for input
+     * @param regEx a String that represents a Regular Expression to use for the test
+     * @return a String value that matches the regular expression
+     */
+    public static String getRegExString(Scanner pipe, String prompt, String regEx)
+    {
+        boolean done = false;
+        String response = "";
+
+        do
+        {
+            System.out.print(prompt +" " + regEx + ": ");
+            response = pipe.nextLine();
+
+            if(response.matches(regEx))
+                done = true;
+            else
+                System.out.println("\nYou must enter a String that matches the pattern " + regEx + "!\n");
+
+        }while(!done);
+
+        return response;
+    }
+
 }
